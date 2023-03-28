@@ -67,13 +67,25 @@ public class ProductController : Controller
 
     public IActionResult Edit(Product p)
     {
-        if (_productServices.Update(p))
+        if (p.AvailableQuantity <= 1)
+        {
+            ModelState.AddModelError("", "số lượng phải lớn hơn 1");
+            return View();
+        }
+        else if (p.Price <= 1)
+        {
+            ModelState.AddModelError("", "giá phải lớn hơn 1");
+            return View();
+        }
+        else if (p.Status <= 1)
+        {
+            ModelState.AddModelError("", "tình trạng phải lớn hơn 1");
+            return View();
+        }
+        else if (_productServices.Update(p))
         {
             return RedirectToAction("Show");
         }
-        else
-        {
-            return BadRequest();
-        }
+        else return BadRequest();
     }
 }
