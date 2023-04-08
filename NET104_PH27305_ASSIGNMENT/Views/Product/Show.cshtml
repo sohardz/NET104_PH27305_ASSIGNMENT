@@ -2,6 +2,10 @@
 
 @{
     ViewData["Title"] = "Show";
+    List<string> imageExtensions = new List<string>()
+    {
+        ".jpg", ".png", ".webp", ".gif", ".pdf", ".tiff", ".jpeg"
+    };
 }
 
 <h1>Show</h1>
@@ -24,7 +28,6 @@
                 Available Quantity
             </th>
             <th>
-                @*@Html.DisplayNameFor(model => model.ImageDirection)*@
                 Image
             </th>
             <th></th>
@@ -44,12 +47,26 @@
                     @Html.DisplayFor(modelItem => item.AvailableQuantity)
                 </td>
                 <td>
-                    <img style="width:50px;height:50px" src="@item.ImageDirection">
-                </td>
+                    @{
+                        var extension = System.IO.Path.GetExtension(item.ImageDirection);
+                    }
+                    @if (imageExtensions.Contains(extension))
+                    {
+                        <img src="~/Image/@item.ImageDirection" height="50px">
+                    }
+                    else
+                    {
+                        <img src="~/Image/banner.png" height="50px">
+                    }
+
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id}) |
-                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id}) |
+                        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id }) |
+                    <form method="post" action="@Url.Action("CallBack","Product")">
+                        <input type="hidden" name="id" value="@item.Id">
+                        <button type="submit" name="action" value="CallBack">CallBack</button>
+                    </form>
                 </td>
             </tr>
         }

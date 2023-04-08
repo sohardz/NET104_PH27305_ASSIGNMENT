@@ -26,13 +26,16 @@ public class CartDetailServices : ICartDetailServices
         }
     }
 
-    public bool Delete(Guid id)
+    public bool Delete(Guid productId, Guid userId)
     {
         try
-        {// Find(id) chỉ dùng được khi id là khóa chính
-            var CartDetail = context.CartDetails.Find(id);
-            context.CartDetails.Remove(CartDetail);
+        {
+            var list = context.CartDetails.ToList();
+            var obj = list.FirstOrDefault(c => c.UserId == userId && c.ProductId == productId);
+
+            context.Remove(obj);
             context.SaveChanges();
+
             return true;
         }
         catch (Exception)
@@ -46,10 +49,15 @@ public class CartDetailServices : ICartDetailServices
         return context.CartDetails.ToList();
     }
 
-    public CartDetail GetById(Guid id)
+    public CartDetail GetById(Guid productId, Guid userId)
     {
-        return context.CartDetails.FirstOrDefault(p => p.Id == id);
-        // return context.CartDetails.SingleOrDefault(p => p.Id == id);
+        var list = context.CartDetails.ToList();
+        var obj = list.FirstOrDefault(c => c.UserId == userId && c.ProductId == productId);
+        if (obj == null)
+        {
+            return new CartDetail();
+        }
+        return obj;
     }
 
     //public List<CartDetail> GetByName(string name)
@@ -57,16 +65,18 @@ public class CartDetailServices : ICartDetailServices
     //    return context.CartDetails.Where(p => p.CartDetailName.Contains(name)).ToList();
     //}
 
-    public bool Update(CartDetail p)
+    public bool Update(Guid productId, Guid userId, CartDetail obj)
     {
         try
-        {// Find(id) chỉ dùng được khi id là khóa chính
-            var CartDetail = context.CartDetails.Find(p.Id);
-            CartDetail.ProductId = p.ProductId;
-            CartDetail.Quantity = p.Quantity;
-            // Có thể sửa thêm thuộc tính
-            context.CartDetails.Update(CartDetail);
+        {
+            var listObj = context.CartDetails.ToList();
+            var objForUpdate = listObj.FirstOrDefault(c => c.UserId == userId && c.ProductId == productId);
+
+            objForUpdate.Quantity = obj.Quantity;
+
+            context.CartDetails.Update(objForUpdate);
             context.SaveChanges();
+
             return true;
         }
         catch (Exception)

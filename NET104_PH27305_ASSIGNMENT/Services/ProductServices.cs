@@ -29,7 +29,7 @@ public class ProductServices : IProductServices
     public bool Delete(Guid id)
     {
         try
-        {// Find(id) chỉ dùng được khi id là khóa chính
+        {
             var product = context.Products.Find(id);
             context.Products.Remove(product);
             context.SaveChanges();
@@ -60,14 +60,14 @@ public class ProductServices : IProductServices
     public bool Update(Product p)
     {
         try
-        {// Find(id) chỉ dùng được khi id là khóa chính
+        {
             var product = context.Products.Find(p.Id);
             product.AvailableQuantity = p.AvailableQuantity;
             product.Price = p.Price;
             product.Status = p.Status;
             product.Name = p.Name;
+            product.ImageDirection = p.ImageDirection;
             product.Description = p.Description;
-            // Có thể sửa thêm thuộc tính
             context.Products.Update(product);
             context.SaveChanges();
             return true;

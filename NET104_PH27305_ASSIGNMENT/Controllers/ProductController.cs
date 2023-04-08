@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NET104_PH27305_ASSIGNMENT.Services;
 using SellerProduct.IServices;
 using SellerProduct.Models;
 using SellerProduct.Services;
@@ -28,8 +29,16 @@ public class ProductController : Controller
     }
 
     [HttpPost]
-    public ActionResult Create(Product p)
+    public ActionResult Create(Product p, IFormFile imageFile)
     {
+        //if (imageFile != null && imageFile.Length > 0)
+        //{
+        //    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Image", imageFile.FileName);
+        //    var stream = new FileStream(path, FileMode.Create);
+        //    imageFile.CopyTo(stream);
+        //    p.Description = imageFile.FileName;
+        //}
+
         if (_productServices.Create(p))
         {
             return RedirectToAction("Show");
@@ -62,6 +71,34 @@ public class ProductController : Controller
     public IActionResult Edit(Guid id)
     {
         var obj = _productServices.GetById(id);
+
+        var products = SessionServices.GetObjFromSession(HttpContext.Session, "History");
+        var existingProduct = products.FirstOrDefault(p => p.Id == id);
+        if (products.Count == 0)
+        {
+            products.Add(obj);
+            SessionServices.SetObjToSession(HttpContext.Session, "History", products);
+        }
+        else
+        {
+            if (SessionServices.CheckObjInList(id, products))
+            {
+                if (existingProduct != null)
+                {
+                    return View(obj);
+                }
+                else
+                {
+                    products.Remove(existingProduct);
+                }
+            }
+            else
+            {
+                products.Add(obj);
+                SessionServices.SetObjToSession(HttpContext.Session, "History", products);
+            }
+        }
+
         return View(obj);
     }
 
@@ -88,4 +125,30 @@ public class ProductController : Controller
         }
         else return BadRequest();
     }
+
+    [HttpPost]
+    public IActionResult CallBack(Guid id, string action)
+    {
+        if (action == "CallBack")
+        {
+            var obj = SessionServices.GetObjFromSession(HttpContext.Session, "History").FirstOrDefault(p => p.Id == id);
+            if (_productServices.Update(obj))
+            {
+                return RedirectToAction("Show");
+            }
+            else return BadRequest();
+        }
+        else
+        {
+            var obj = _productServices.GetById(id);
+            return RedirectToAction("Update", obj);
+        }
+    }
+
+    public IActionResult HistoryEdit()
+    {
+        var products = SessionServices.GetObjFromSession(HttpContext.Session, "History");
+        return View(products);
+    }
+
 }

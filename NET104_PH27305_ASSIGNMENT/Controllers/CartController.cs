@@ -9,71 +9,100 @@ public class CartController : Controller
 {
     private readonly ILogger<CartController> _logger;
     private readonly ICartServices _cartServices;
+    private readonly ICartDetailServices _cartDetailServices;
+    private readonly IProductServices _productServices;
 
     public CartController(ILogger<CartController> logger)
     {
         _logger = logger;
         _cartServices = new CartServices();
+        _productServices = new ProductServices();
+        _cartDetailServices = new CartDetailServices();
     }
 
-    public ActionResult Show()
+    //[Route("Show/{id}")]
+    public ActionResult Show(Guid userId)
     {
-        List<Cart> lst = _cartServices.GetAll();
-        return View(lst);
-    }
+        //userId = Guid.Parse("00000000-0000-0000-0000-000000000000");
+        //if (idUser == Guid.Empty)
+        //{
+        //    return RedirectToAction("Index", "Home");
+        //}
 
-    public ActionResult Create()
-    {
+        //userId = Guid.Parse("0D77B2C0-DFD1-4DA2-DF97-08DB35CDB8BE");
+
+        var listCartDetails = _cartDetailServices.GetAll();
+        ViewBag.listCartDetails = listCartDetails.Where(c => c.UserId == userId).ToList();
+        ViewBag.listProduct = _productServices.GetAll();
+
         return View();
     }
 
-    [HttpPost]
-    public ActionResult Create(Cart p)
+    public ActionResult Create(Guid productId, Guid userId)
     {
-        if (_cartServices.Create(p))
+        List<CartDetail> cartDetails = _cartDetailServices.GetAll();
+
+        CartDetail obj = new()
         {
-            return RedirectToAction("Show");
+            UserId = userId,
+            ProductId = productId,
+            Quantity = 1
+        };
+
+        // Check sản phẩm đã có trong giỏ hàng hay chưa
+        // Nếu có => Update +1 cho Amount
+        // Nếu không => Create
+        if (cartDetails.Any(c => c.UserId == userId && c.ProductId == productId))
+        {
+            // Update
+            obj.Quantity = cartDetails.FirstOrDefault(c => c.UserId == userId && c.ProductId == productId).Quantity + 1;
+            var resultUpdate = _cartDetailServices.Update(obj.ProductId, obj.UserId, obj);
+
+            if (resultUpdate)
+            {
+                return RedirectToAction("Show", new { userId = userId });
+            }
         }
         else
         {
-            return BadRequest();
+            var result = _cartDetailServices.Create(obj);
+
+            if (result)
+            {
+                return RedirectToAction("Show", new { userId = userId });
+            }
         }
+
+        return RedirectToAction("Index", "Home");
     }
 
-    public IActionResult Details(Guid id)
+
+    public IActionResult Details(Guid productId, Guid userId)
     {
-        var obj = _cartServices.GetById(id);
-        return View(obj);
+        ViewBag.cartDetails = _cartDetailServices.GetById(productId, userId);
+
+        return View();
     }
 
-    public IActionResult Delete(Guid id)
+    public IActionResult Delete(Guid productId, Guid userId)
     {
-        if (_cartServices.Delete(id))
-        {
-            return RedirectToAction("Show");
-        }
-        else
-        {
-            return BadRequest();
-        }
+        var result = _cartDetailServices.Delete(productId, userId);
+
+        return RedirectToAction("Index", new { idUser = Guid.Empty });
     }
 
-    [HttpGet]
-    public IActionResult Edit(Guid id)
-    {
-        var obj = _cartServices.GetById(id);
-        return View(obj);
-    }
 
-    public IActionResult Edit(Cart p)
+    public IActionResult Edit(CartDetail obj)
     {
-        if (_cartServices.Update(p))
+        obj.UserId = Guid.Parse("00000000-0000-0000-0000-000000000000");
+
+        var result = _cartDetailServices.Update(obj.ProductId, obj.UserId, obj);
+
+        if (result)
         {
-            return RedirectToAction("Show");
+            return RedirectToAction("Index");
         }
-        else
-        {
-            return BadRequest();
-        }
+
+        return View();
     }
 }

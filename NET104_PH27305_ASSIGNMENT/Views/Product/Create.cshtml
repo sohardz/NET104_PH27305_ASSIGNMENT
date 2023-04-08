@@ -34,7 +34,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="ImageDirection" class="control-label"></label>
-                <input asp-for="ImageDirection" class="form-control" />
+                <input type="file" asp-for="ImageDirection" accept="image/*" />
                 <span asp-validation-for="ImageDirection" class="text-danger"></span>
             </div>
             <div class="form-group">
