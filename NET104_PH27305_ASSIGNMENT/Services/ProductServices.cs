@@ -1,7 +1,7 @@
-﻿using SellerProduct.IServices;
-using SellerProduct.Models;
+﻿using NET104_PH27305_ASSIGNMENT.IServices;
+using NET104_PH27305_ASSIGNMENT.Models;
 
-namespace SellerProduct.Services;
+namespace NET104_PH27305_ASSIGNMENT.Services;
 
 public class ProductServices : IProductServices
 {

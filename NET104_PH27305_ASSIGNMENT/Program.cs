@@ -1,5 +1,5 @@
-using SellerProduct.IServices;
-using SellerProduct.Services;
+using NET104_PH27305_ASSIGNMENT.IServices;
+using NET104_PH27305_ASSIGNMENT.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

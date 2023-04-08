@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SellerProduct.Models;
-namespace SellerProduct.Configurations;
+using NET104_PH27305_ASSIGNMENT.Models;
+namespace NET104_PH27305_ASSIGNMENT.Configurations;
 
 public class UserConfiguration : IEntityTypeConfiguration<User>
 {

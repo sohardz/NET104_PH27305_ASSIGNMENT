@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SellerProduct.IServices;
-using SellerProduct.Models;
-using SellerProduct.Services;
+using NET104_PH27305_ASSIGNMENT.IServices;
+using NET104_PH27305_ASSIGNMENT.Models;
+using NET104_PH27305_ASSIGNMENT.Services;
 
 namespace NET104_PH27305_ASSIGNMENT.Controllers;
 
@@ -20,21 +20,11 @@ public class CartController : Controller
         _cartDetailServices = new CartDetailServices();
     }
 
-    //[Route("Show/{id}")]
     public ActionResult Show(Guid userId)
     {
-        //userId = Guid.Parse("00000000-0000-0000-0000-000000000000");
-        //if (idUser == Guid.Empty)
-        //{
-        //    return RedirectToAction("Index", "Home");
-        //}
-
-        //userId = Guid.Parse("0D77B2C0-DFD1-4DA2-DF97-08DB35CDB8BE");
-
         var listCartDetails = _cartDetailServices.GetAll();
         ViewBag.listCartDetails = listCartDetails.Where(c => c.UserId == userId).ToList();
         ViewBag.listProduct = _productServices.GetAll();
-
         return View();
     }
 
@@ -49,31 +39,15 @@ public class CartController : Controller
             Quantity = 1
         };
 
-        // Check sản phẩm đã có trong giỏ hàng hay chưa
-        // Nếu có => Update +1 cho Amount
-        // Nếu không => Create
         if (cartDetails.Any(c => c.UserId == userId && c.ProductId == productId))
         {
-            // Update
             obj.Quantity = cartDetails.FirstOrDefault(c => c.UserId == userId && c.ProductId == productId).Quantity + 1;
-            var resultUpdate = _cartDetailServices.Update(obj.ProductId, obj.UserId, obj);
-
-            if (resultUpdate)
-            {
-                return RedirectToAction("Show", new { userId = userId });
-            }
+            return _cartDetailServices.Update(obj.ProductId, obj.UserId, obj) ? RedirectToAction("Show", new { userId }) : BadRequest();
         }
         else
         {
-            var result = _cartDetailServices.Create(obj);
-
-            if (result)
-            {
-                return RedirectToAction("Show", new { userId = userId });
-            }
+            return _cartDetailServices.Create(obj) ? RedirectToAction("Show", new { userId }) : BadRequest();
         }
-
-        return RedirectToAction("Index", "Home");
     }
 
 
@@ -86,11 +60,8 @@ public class CartController : Controller
 
     public IActionResult Delete(Guid productId, Guid userId)
     {
-        var result = _cartDetailServices.Delete(productId, userId);
-
-        return RedirectToAction("Index", new { idUser = Guid.Empty });
+        return _cartDetailServices.Delete(productId, userId) ? RedirectToAction("Show", new { userId }) : BadRequest();
     }
-
 
     public IActionResult Edit(CartDetail obj)
     {

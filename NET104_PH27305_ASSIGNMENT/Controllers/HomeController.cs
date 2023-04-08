@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NET104_PH27305_ASSIGNMENT.IServices;
 using NET104_PH27305_ASSIGNMENT.Models;
-using SellerProduct.IServices;
-using SellerProduct.Services;
+using NET104_PH27305_ASSIGNMENT.Services;
 using System.Diagnostics;
 
 namespace NET104_PH27305_ASSIGNMENT.Controllers

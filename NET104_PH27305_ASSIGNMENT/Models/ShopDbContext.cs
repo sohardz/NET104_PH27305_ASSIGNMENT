@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
-namespace SellerProduct.Models;
+namespace NET104_PH27305_ASSIGNMENT.Models;
 
 public class ShopDbContext : DbContext
 {

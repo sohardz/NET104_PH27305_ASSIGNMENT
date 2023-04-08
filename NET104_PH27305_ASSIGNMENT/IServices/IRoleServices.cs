@@ -1,6 +1,6 @@
-﻿using SellerProduct.Models;
+﻿using NET104_PH27305_ASSIGNMENT.Models;
 
-namespace SellerProduct.IServices;
+namespace NET104_PH27305_ASSIGNMENT.IServices;
 
 public interface IRoleServices
 {

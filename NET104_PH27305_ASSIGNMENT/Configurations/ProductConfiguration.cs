@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SellerProduct.Models;
+using NET104_PH27305_ASSIGNMENT.Models;
 
-namespace SellerProduct.Configurations;
+namespace NET104_PH27305_ASSIGNMENT.Configurations;
 
 public class ProductConfiguration : IEntityTypeConfiguration<Product>
 {
