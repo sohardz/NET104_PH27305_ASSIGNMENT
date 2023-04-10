@@ -4,13 +4,12 @@
     ViewData["Title"] = "Show";
     List<CartDetail> listCartdetails = ViewBag.listCartDetails;
     List<Product> listProduct = ViewBag.listProduct;
+    int total = 0;
 }
 
 <h1>Giỏ hàng</h1>
 
 <div class="content pb-5 bg-white">
-    <h3 class="text-uppercase text-center py-4">Giỏ hàng của bạn</h3>
-
     <table class="table table-hover text-center"
            style="max-width: 1000px; margin: 0 auto;box-shadow: 0px 0px 30px rgba(187,51,255,1); color: unset; table-layout: fixed; vertical-align: middle;">
         <thead class="fs-6">
@@ -35,7 +34,7 @@
                         <div class="row p-0 m-0">
                             <div class="col-6">
                                 <img class="p-2"
-                                     src="@listProduct.FirstOrDefault(c=>c.Id == productInCart.ProductId).ImageDirection"
+                                     src="~/Image/@listProduct.FirstOrDefault(c=>c.Id == productInCart.ProductId).ImageDirection"
                                      alt="product" style="object-fit: cover; max-width: 100%;height: auto;">
                             </div>
                             <div class="col-6 py-4">
@@ -48,12 +47,7 @@
                     <td><b>@(listProduct.FirstOrDefault(c => c.Id == productInCart.ProductId).Price * productInCart.Quantity)</b></td>
                     <td colspan="2">
                         <div class="btn btn-product">
-                            @Html.ActionLink("Xóa",
-                        "Delete",  // <-- Controller Name.
-                        "Cart",   // <-- ActionMethod
-                        new {idProduct = @productInCart.ProductId, idUser = Guid.Parse("00000000-0000-0000-0000-000000000000") },
-                        null
-                        )
+                            <a href="@Url.Action("Delete","Cart", new { productId = @productInCart.ProductId, userId="0D77B2C0-DFD1-4DA2-DF97-08DB35CDB8BE" })">Xóa</a>
                         </div>
                     </td>
                 </tr>
@@ -62,8 +56,20 @@
                 <th class="text-uppercase fs-5" colspan="6">
                     Tổng thành tiền (@listCartdetails.Count())
                 </th>
-                <td class="fs-6"><b>1.995.000 đ</b></td>
-                <td colspan="2"><button type="button" class="btn btn">Mua hàng</button></td>
+                <td class="fs-6">
+                    <b>
+                        @for (int i = 0; i < listCartdetails.Count; i++)
+                        {
+                            total += listCartdetails[i].Quantity * listProduct.FirstOrDefault(c => c.Id == listCartdetails[i].ProductId).Price;
+                        }
+                        @total
+                    </b>
+                </td>
+                <td colspan="2">
+                    <div class="btn btn-product">
+                        <a href="@Url.Action("Create","Bill", new {userId="0D77B2C0-DFD1-4DA2-DF97-08DB35CDB8BE" })">Thanh toán</a>
+                    </div>
+                </td>
             </tr>
         </tbody>
     </table>

@@ -76,4 +76,9 @@ public class UserServices : IUserServices
             return false;
         }
     }
+
+    public User Login(string email, string password)
+    {
+        return context.Users.FirstOrDefault(c => c.Email == email && c.Password == password);
+    }
 }

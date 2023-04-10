@@ -10,4 +10,5 @@ public interface IUserServices
     public List<User> GetAll();
     public User GetById(Guid id);
     public List<User> GetByName(string name);
+    public User Login(string email, string password);
 }

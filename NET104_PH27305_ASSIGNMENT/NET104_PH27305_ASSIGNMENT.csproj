@@ -12,6 +12,20 @@
 
   <ItemGroup>
     <None Include="C:\Users\adm\Desktop\NET104_PH27305_ASSIGNMENT\NET104_PH27305_ASSIGNMENT\.editorconfig" />
+    <None Include="wwwroot\home\img\godaddy.svg" />
+    <None Include="wwwroot\home\img\norton.svg" />
+    <None Include="wwwroot\home\img\ssl.svg" />
+    <None Include="wwwroot\home\js\main.js" />
+    <None Include="wwwroot\home\lib\easing\easing.js" />
+    <None Include="wwwroot\home\lib\easing\easing.min.js" />
+    <None Include="wwwroot\home\lib\slick\config.rb" />
+    <None Include="wwwroot\home\lib\slick\fonts\slick.svg" />
+    <None Include="wwwroot\home\lib\slick\slick-theme.less" />
+    <None Include="wwwroot\home\lib\slick\slick-theme.scss" />
+    <None Include="wwwroot\home\lib\slick\slick.js" />
+    <None Include="wwwroot\home\lib\slick\slick.less" />
+    <None Include="wwwroot\home\lib\slick\slick.min.js" />
+    <None Include="wwwroot\home\lib\slick\slick.scss" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,6 +43,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Areas\Customer\Data\" />
+    <Folder Include="Areas\Customer\Models\" />
     <Folder Include="Configurations\" />
     <Folder Include="Migrations\" />
   </ItemGroup>

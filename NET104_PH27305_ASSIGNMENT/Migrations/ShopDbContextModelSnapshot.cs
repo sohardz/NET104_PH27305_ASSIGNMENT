@@ -22,7 +22,7 @@ namespace NET104_PH27305_ASSIGNMENT.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("SellerProduct.Models.Bill", b =>
+            modelBuilder.Entity("NET104_PH27305_ASSIGNMENT.Models.Bill", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -44,7 +44,7 @@ namespace NET104_PH27305_ASSIGNMENT.Migrations
                     b.ToTable("Bills");
                 });
 
-            modelBuilder.Entity("SellerProduct.Models.BillDetails", b =>
+            modelBuilder.Entity("NET104_PH27305_ASSIGNMENT.Models.BillDetails", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -71,7 +71,7 @@ namespace NET104_PH27305_ASSIGNMENT.Migrations
                     b.ToTable("BillDetails");
                 });
 
-            modelBuilder.Entity("SellerProduct.Models.Cart", b =>
+            modelBuilder.Entity("NET104_PH27305_ASSIGNMENT.Models.Cart", b =>
                 {
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -85,7 +85,7 @@ namespace NET104_PH27305_ASSIGNMENT.Migrations
                     b.ToTable("Carts");
                 });
 
-            modelBuilder.Entity("SellerProduct.Models.CartDetail", b =>
+            modelBuilder.Entity("NET104_PH27305_ASSIGNMENT.Models.CartDetail", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -109,7 +109,7 @@ namespace NET104_PH27305_ASSIGNMENT.Migrations
                     b.ToTable("CartDetails");
                 });
 
-            modelBuilder.Entity("SellerProduct.Models.Product", b =>
+            modelBuilder.Entity("NET104_PH27305_ASSIGNMENT.Models.Product", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -149,7 +149,7 @@ namespace NET104_PH27305_ASSIGNMENT.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("SellerProduct.Models.Role", b =>
+            modelBuilder.Entity("NET104_PH27305_ASSIGNMENT.Models.Role", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -171,11 +171,15 @@ namespace NET104_PH27305_ASSIGNMENT.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("SellerProduct.Models.User", b =>
+            modelBuilder.Entity("NET104_PH27305_ASSIGNMENT.Models.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -200,9 +204,9 @@ namespace NET104_PH27305_ASSIGNMENT.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("SellerProduct.Models.Bill", b =>
+            modelBuilder.Entity("NET104_PH27305_ASSIGNMENT.Models.Bill", b =>
                 {
-                    b.HasOne("SellerProduct.Models.User", "User")
+                    b.HasOne("NET104_PH27305_ASSIGNMENT.Models.User", "User")
                         .WithMany("Bills")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -211,15 +215,15 @@ namespace NET104_PH27305_ASSIGNMENT.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("SellerProduct.Models.BillDetails", b =>
+            modelBuilder.Entity("NET104_PH27305_ASSIGNMENT.Models.BillDetails", b =>
                 {
-                    b.HasOne("SellerProduct.Models.Bill", "Bill")
+                    b.HasOne("NET104_PH27305_ASSIGNMENT.Models.Bill", "Bill")
                         .WithMany("BillDetails")
                         .HasForeignKey("BillId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SellerProduct.Models.Product", "Product")
+                    b.HasOne("NET104_PH27305_ASSIGNMENT.Models.Product", "Product")
                         .WithMany("BillDetails")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -230,26 +234,26 @@ namespace NET104_PH27305_ASSIGNMENT.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("SellerProduct.Models.Cart", b =>
+            modelBuilder.Entity("NET104_PH27305_ASSIGNMENT.Models.Cart", b =>
                 {
-                    b.HasOne("SellerProduct.Models.User", "User")
+                    b.HasOne("NET104_PH27305_ASSIGNMENT.Models.User", "User")
                         .WithOne("Cart")
-                        .HasForeignKey("SellerProduct.Models.Cart", "UserId")
+                        .HasForeignKey("NET104_PH27305_ASSIGNMENT.Models.Cart", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("SellerProduct.Models.CartDetail", b =>
+            modelBuilder.Entity("NET104_PH27305_ASSIGNMENT.Models.CartDetail", b =>
                 {
-                    b.HasOne("SellerProduct.Models.Product", "Product")
+                    b.HasOne("NET104_PH27305_ASSIGNMENT.Models.Product", "Product")
                         .WithMany("CartDetails")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SellerProduct.Models.Cart", "Cart")
+                    b.HasOne("NET104_PH27305_ASSIGNMENT.Models.Cart", "Cart")
                         .WithMany("CartDetails")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -260,9 +264,9 @@ namespace NET104_PH27305_ASSIGNMENT.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("SellerProduct.Models.User", b =>
+            modelBuilder.Entity("NET104_PH27305_ASSIGNMENT.Models.User", b =>
                 {
-                    b.HasOne("SellerProduct.Models.Role", "Role")
+                    b.HasOne("NET104_PH27305_ASSIGNMENT.Models.Role", "Role")
                         .WithMany("Users")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -271,29 +275,29 @@ namespace NET104_PH27305_ASSIGNMENT.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("SellerProduct.Models.Bill", b =>
+            modelBuilder.Entity("NET104_PH27305_ASSIGNMENT.Models.Bill", b =>
                 {
                     b.Navigation("BillDetails");
                 });
 
-            modelBuilder.Entity("SellerProduct.Models.Cart", b =>
+            modelBuilder.Entity("NET104_PH27305_ASSIGNMENT.Models.Cart", b =>
                 {
                     b.Navigation("CartDetails");
                 });
 
-            modelBuilder.Entity("SellerProduct.Models.Product", b =>
+            modelBuilder.Entity("NET104_PH27305_ASSIGNMENT.Models.Product", b =>
                 {
                     b.Navigation("BillDetails");
 
                     b.Navigation("CartDetails");
                 });
 
-            modelBuilder.Entity("SellerProduct.Models.Role", b =>
+            modelBuilder.Entity("NET104_PH27305_ASSIGNMENT.Models.Role", b =>
                 {
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("SellerProduct.Models.User", b =>
+            modelBuilder.Entity("NET104_PH27305_ASSIGNMENT.Models.User", b =>
                 {
                     b.Navigation("Bills");
 

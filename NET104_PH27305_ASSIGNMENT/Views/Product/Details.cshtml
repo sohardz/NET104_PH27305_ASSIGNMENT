@@ -1,5 +1,4 @@
 ﻿@model NET104_PH27305_ASSIGNMENT.Models.Product
-@using NET104_PH27305_ASSIGNMENT.Models;
 
 @{
     ViewData["Title"] = "Details";
@@ -10,55 +9,57 @@
 <div>
     <h4>Product</h4>
     <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.AvailableQuantity)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.AvailableQuantity)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ImageDirection)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ImageDirection)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Supplier)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Supplier)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-    </dl>
-</div>
-<div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Show">Back to List</a> |
-    <div enctype="multipart/form-data">
-        @Html.ActionLink("Thêm vào giỏ hàng","Create","Cart", new{ productId = Model.Id, userId="0D77B2C0-DFD1-4DA2-DF97-08DB35CDB8BE"},null)
+    <div class="row">
+        <div class="col-md-6">
+            <dl class="row">
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Name)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Name)
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Price)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Price)
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.AvailableQuantity)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.AvailableQuantity)
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Status)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model=>model.Status)
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Supplier)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Supplier)
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Description)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Description)
+                </dd>
+            </dl>
+        </div>
+        <div class="col-md-6">
+            <div>
+                <img src="~/Image/@Model.ImageDirection" height="300px" width="300px">
+            </div>
+            <div> |
+                <div enctype="multipart/form-data">
+                    @Html.ActionLink("Thêm vào giỏ hàng","Create","Cart", new{ productId = Model.Id, userId="0D77B2C0-DFD1-4DA2-DF97-08DB35CDB8BE"})
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+

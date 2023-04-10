@@ -1,0 +1,51 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="section-header">
+        <h1>Recent Product</h1>
+    </div>
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-3" style="padding:10px">
+                <div class="product-item">
+                    <div class="product-title">
+                        <a href="@Url.Action("Details","Product",new { id=item.Id })">@item.Name</a>
+                    </div>
+                    <div class="product-image">
+                        <a href="product-detail.html">
+                            <img src="~/Image/@item.ImageDirection" alt="Product Image">
+                        </a>
+                        <div class="product-action">
+                            <a href="@Url.Action("Create","Cart", new {productId =item.Id, userId="0D77B2C0-DFD1-4DA2-DF97-08DB35CDB8BE" })"><i class="fa fa-cart-plus"></i></a>
+                            <a class="btn" href="@Url.Action("Details","Product",new { id=item.Id })"><i class="fa fa-search"></i></a>
+                        </div>
+                    </div>
+                    <div class="product-price">
+                        <h3><span>đ</span>@item.Price</h3>
+                        <a class="btn" href="@Url.Action("Details","Product",new { id=item.Id })"><i class="fa fa-shopping-cart"></i>Mua Ngay</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div>
+    <h2>Giới Thiệu Cửa Hàng</h2>
+    <div class="row">
+        <div class="col-md-6 col-xs-6">
+            <span>
+                Với châm ngôn: "Bạn nói như vậy á là bạn xa lộ", chúng tôi không nói mà chúng tôi làm. Đem đến cho bạn những đôi giày chất lượng nhất, cool nhất high nhất từ nhà Converse để bạn tha hồ chất chơi mà vẫn classic.
+            </span>
+        </div>
+        <div class="col-md-6 col-xs-6">
+            <a href="">
+                <img src="/image/1.jfif" style="width:250px; height:250px" />
+            </a>
+        </div>
+    </div>
+</div>

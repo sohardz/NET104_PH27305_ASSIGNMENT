@@ -5,7 +5,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<IProductServices, ProductServices>();
 builder.Services.AddTransient<IUserServices, UserServices>();
 builder.Services.AddTransient<IRoleServices, RoleServices>();
@@ -14,9 +13,22 @@ builder.Services.AddTransient<ICartDetailServices, CartDetailServices>();
 builder.Services.AddTransient<IBillServices, BillServices>();
 builder.Services.AddTransient<IBillDetailServices, BillDetailServices>();
 
+builder.Services.AddDistributedMemoryCache();
+
+Dictionary<string, TimeSpan> sessionTime = new()
+{
+    { "Account", new TimeSpan(0, 10, 0) }
+};
+
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(1);
+    foreach (var key in sessionTime.Keys)
+    {
+        if (sessionTime.TryGetValue(key, out TimeSpan duration))
+        {
+            options.IdleTimeout = duration;
+        }
+    }
 });
 
 var app = builder.Build();
@@ -35,6 +47,14 @@ app.UseSession();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+      name: "areas",
+      pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+    );
+});
 
 app.MapControllerRoute(
     name: "default",

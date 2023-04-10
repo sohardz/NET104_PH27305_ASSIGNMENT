@@ -103,9 +103,9 @@ public class ProductController : Controller
 
     public IActionResult Edit(Product p)
     {
-        if (p.AvailableQuantity <= 1)
+        if (p.AvailableQuantity < 1)
         {
-            ModelState.AddModelError("", "số lượng phải lớn hơn 1");
+            ModelState.AddModelError("", "số lượng phải lớn hơn 0");
             return View();
         }
         else if (p.Price <= 1)
@@ -113,9 +113,9 @@ public class ProductController : Controller
             ModelState.AddModelError("", "giá phải lớn hơn 1");
             return View();
         }
-        else if (p.Status <= 1)
+        else if (p.Status < 0)
         {
-            ModelState.AddModelError("", "tình trạng phải lớn hơn 1");
+            ModelState.AddModelError("", "tình trạng phải lớn hơn hoặc bằng 0");
             return View();
         }
         else if (_productServices.Update(p))
