@@ -11,17 +11,19 @@ namespace NET104_PH27305_ASSIGNMENT.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IProductServices _productServices;
         private readonly IUserServices _userServices;
+        private readonly IRoleServices _roleServices;
 
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
             _productServices = new ProductServices();
             _userServices = new UserServices();
+            _roleServices = new RoleServices();
         }
 
         public IActionResult Index()
         {
-            var lst = _productServices.GetAll().Where(c => c.AvailableQuantity > 5);
+            var lst = _productServices.GetAll().Where(c => c.AvailableQuantity > 1);
             return View(lst);
         }
 
@@ -43,6 +45,17 @@ namespace NET104_PH27305_ASSIGNMENT.Controllers
             }
         }
 
+        public bool CheckLogin(string email, string password)
+        {
+            var user = _userServices.GetByEmail(email.Trim());
+            if (user != null && user.Password == password && user.Status == 1)
+            {
+                var role = _roleServices.GetById(user.RoleId);
+                if (role.Name != "Staff") return true;
+            }
+            return false;
+        }
+
         public IActionResult Login()
         {
             return View();
@@ -51,20 +64,27 @@ namespace NET104_PH27305_ASSIGNMENT.Controllers
         [HttpPost]
         public IActionResult Login(string email, string password)
         {
-            if (ModelState.IsValid)
+            var isValid = CheckLogin(email, password);
+            if (isValid)
             {
-                var user = _userServices.Login(email,password);
+                var user = _userServices.GetByEmail(email.Trim());
+                var userId = user.Id.ToString();
+                HttpContext.Session.SetString("userId", userId);
                 if (user != null)
-                {
-                    HttpContext.Session.SetString("email", email);
                     return RedirectToAction("Index");
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Sai tài khoản hoặc mật khẩu");
-                }
+                ViewData["ErrorMessage"] = "User not found";
             }
-            return View();
+            else
+            {
+                ViewBag.ErrorMessage = "The user name or password provided is incorrect.";
+            }
+            return BadRequest();
+        }
+
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Remove("userId");
+            return RedirectToAction("Index");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

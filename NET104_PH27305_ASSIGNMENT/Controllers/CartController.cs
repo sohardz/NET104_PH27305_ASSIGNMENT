@@ -20,34 +20,43 @@ public class CartController : Controller
         _cartDetailServices = new CartDetailServices();
     }
 
-    public ActionResult Show(Guid userId)
+    public ActionResult Show()
     {
-        var listCartDetails = _cartDetailServices.GetAll();
-        ViewBag.listCartDetails = listCartDetails.Where(c => c.UserId == userId).ToList();
-        ViewBag.listProduct = _productServices.GetAll();
-        return View();
+        var userId = HttpContext.Session.GetString("userId");
+        ViewData["userId"] = userId;
+        if (!string.IsNullOrEmpty(userId))
+        {
+            ViewBag.listCartDetails = _cartDetailServices.GetAll().Where(c => c.UserId == Guid.Parse(userId)).ToList();
+            ViewBag.listProduct = _productServices.GetAll();
+            return View();
+        }
+        return RedirectToAction("Login", "Home");
     }
 
-    public ActionResult Create(Guid productId, Guid userId)
+    public ActionResult Create(Guid productId)
     {
-        List<CartDetail> cartDetails = _cartDetailServices.GetAll();
-
-        CartDetail obj = new()
+        var userId = HttpContext.Session.GetString("userId");
+        Guid id = Guid.Parse(userId);
+        if (!string.IsNullOrEmpty(userId))
         {
-            UserId = userId,
-            ProductId = productId,
-            Quantity = 1
-        };
-
-        if (cartDetails.Any(c => c.UserId == userId && c.ProductId == productId))
-        {
-            obj.Quantity = cartDetails.FirstOrDefault(c => c.UserId == userId && c.ProductId == productId).Quantity + 1;
-            return _cartDetailServices.Update(obj.ProductId, obj.UserId, obj) ? RedirectToAction("Show", new { userId }) : BadRequest();
+            List<CartDetail> cartDetails = _cartDetailServices.GetAll().Where(c => c.UserId == id).ToList();
+            CartDetail obj = new()
+            {
+                UserId = id,
+                ProductId = productId,
+                Quantity = 1
+            };
+            if (cartDetails.Any(c => c.UserId == id && c.ProductId == productId))
+            {
+                obj.Quantity = cartDetails.FirstOrDefault(c => c.UserId == id && c.ProductId == productId).Quantity + 1;
+                return _cartDetailServices.Update(obj.ProductId, obj.UserId, obj) ? RedirectToAction("Show") : BadRequest();
+            }
+            else
+            {
+                return _cartDetailServices.Create(obj) ? RedirectToAction("Show") : BadRequest();
+            }
         }
-        else
-        {
-            return _cartDetailServices.Create(obj) ? RedirectToAction("Show", new { userId }) : BadRequest();
-        }
+        return BadRequest();
     }
 
 
@@ -58,9 +67,10 @@ public class CartController : Controller
         return View();
     }
 
-    public IActionResult Delete(Guid productId, Guid userId)
+    public IActionResult Delete(Guid productId)
     {
-        return _cartDetailServices.Delete(productId, userId) ? RedirectToAction("Show", new { userId }) : BadRequest();
+        Guid id = Guid.Parse(HttpContext.Session.GetString("userId"));
+        return _cartDetailServices.Delete(productId, id) ? RedirectToAction("Show") : BadRequest();
     }
 
     public IActionResult Edit(CartDetail obj)

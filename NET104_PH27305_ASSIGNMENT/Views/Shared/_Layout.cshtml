@@ -61,8 +61,8 @@
                     </div>
                     <div class="navbar-nav ml-auto">
                         <div class="nav-item ">
-                            <a href="#" class="btn wishlist"><span>Đăng Nhập</span></a>
-                            <a href="@Url.Action("Register","Home")" class="btn cart"><span>Đăng Ký</span> </a>
+                            <a href="@Url.Action("Login", "Home")" class="btn wishlist"><span>Đăng Nhập</span></a>
+                            <a href="@Url.Action("Register", "Home")" class="btn cart"><span>Đăng Ký</span> </a>
                         </div>
                     </div>
                 </div>
@@ -93,7 +93,7 @@
                         <i class="fa fa-heart"></i>
                         <span>(0)</span>
                         </a>*@
-                        <a href="@Url.Action("Show","Cart",new{userId="0D77B2C0-DFD1-4DA2-DF97-08DB35CDB8BE"})" class="btn cart">
+                        <a href="@Url.Action("Show","Cart")" class="btn cart">
                             <i class="fa fa-shopping-cart"></i>
                             <span>(0)</span>
                         </a>

@@ -46,6 +46,11 @@ public class UserServices : IUserServices
         return context.Users.ToList();
     }
 
+    public List<User> GetAll(Guid roleId)
+    {
+        return context.Users.Where(c=>c.RoleId==roleId).ToList();
+    }
+
     public User GetById(Guid id)
     {
         return context.Users.FirstOrDefault(p => p.Id == id);
@@ -77,8 +82,8 @@ public class UserServices : IUserServices
         }
     }
 
-    public User Login(string email, string password)
+    public User GetByEmail(string email)
     {
-        return context.Users.FirstOrDefault(c => c.Email == email && c.Password == password);
+        return context.Users.FirstOrDefault(c => c.Email == email);
     }
 }
