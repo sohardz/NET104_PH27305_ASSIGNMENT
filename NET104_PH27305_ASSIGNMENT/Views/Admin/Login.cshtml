@@ -1,14 +1,8 @@
-﻿@model NET104_PH27305_ASSIGNMENT.Models.User
-
-@{
-    ViewData["Title"] = "Login";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-<h3>Đăng nhập khách hàng</h3>
+﻿<h3>Đăng nhập quản trị viên</h3>
 
 <div class="col-md-6 col-sm-12">
     <div class="login-form">
-        <form method="post" asp-controller="Home" asp-action="Login">
+        <form method="post" asp-controller="Admin" asp-action="Login">
             <div class="form-group">
                 <label>Email</label>
                 <input type="text" class="form-control" name="email">

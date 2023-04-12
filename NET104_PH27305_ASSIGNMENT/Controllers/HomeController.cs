@@ -12,6 +12,7 @@ namespace NET104_PH27305_ASSIGNMENT.Controllers
         private readonly IProductServices _productServices;
         private readonly IUserServices _userServices;
         private readonly IRoleServices _roleServices;
+        private readonly ICartServices _cartServices;
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -19,6 +20,7 @@ namespace NET104_PH27305_ASSIGNMENT.Controllers
             _productServices = new ProductServices();
             _userServices = new UserServices();
             _roleServices = new RoleServices();
+            _cartServices = new CartServices();
         }
 
         public IActionResult Index()
@@ -35,8 +37,15 @@ namespace NET104_PH27305_ASSIGNMENT.Controllers
         [HttpPost]
         public IActionResult Register(User user)
         {
+            user.Id = Guid.NewGuid();
             if (_userServices.Create(user))
             {
+                Cart cart = new()
+                {
+                    UserId = user.Id,
+                    Description = $"của {user.Name}"
+                };
+                _cartServices.Create(cart);
                 return RedirectToAction("Index");
             }
             else

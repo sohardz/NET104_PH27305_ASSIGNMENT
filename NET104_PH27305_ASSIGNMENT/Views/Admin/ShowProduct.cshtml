@@ -1,16 +1,19 @@
 ﻿@model IEnumerable<NET104_PH27305_ASSIGNMENT.Models.Product>
 
 @{
-    Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewData["Title"] = "Show";
+    ViewData["Title"] = "ShowProduct";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
     List<string> imageExtensions = new List<string>()
     {
         ".jpg", ".png", ".webp", ".gif", ".pdf", ".tiff", ".jpeg"
     };
 }
 
-<h1>Tất cả sản phẩm</h1>
+<h1>ShowProduct</h1>
 
+<p>
+    <a asp-action="CreateProduct">Create New</a>
+</p>
 <table class="table">
     <thead>
         <tr>
@@ -56,6 +59,16 @@
                     {
                         <img src="~/Image/banner.png" height="50px">
                     }
+
+                <td>
+                        @Html.ActionLink("Edit", "EditProduct", new { id = item.Id}) |
+                        @Html.ActionLink("Details", "DetailsProduct", new { id = item.Id }) |
+                        @Html.ActionLink("Delete", "DeleteProduct", new { id = item.Id }) |
+                    <form method="post" action="@Url.Action("CallBack","Admin")">
+                        <input type="hidden" name="id" value="@item.Id">
+                        <button type="submit" name="action" value="CallBack">CallBack</button>
+                    </form>
+                </td>
             </tr>
         }
     </tbody>

@@ -5,6 +5,7 @@
     List<CartDetail> listCartdetails = ViewBag.listCartDetails;
     List<Product> listProduct = ViewBag.listProduct;
     int total = 0;
+    var index = 0;
 }
 
 <h1>Giỏ hàng</h1>
@@ -23,9 +24,6 @@
             </tr>
         </thead>
         <tbody>
-            @{
-                var index = 0;
-            }
             @foreach (var productInCart in listCartdetails)
             {
                 <tr>
@@ -47,7 +45,7 @@
                     <td><b>@(listProduct.FirstOrDefault(c => c.Id == productInCart.ProductId).Price * productInCart.Quantity)</b></td>
                     <td colspan="2">
                         <div class="btn btn-product">
-                            <a href="@Url.Action("Delete","Cart", new { productId = @productInCart.ProductId, userId="0D77B2C0-DFD1-4DA2-DF97-08DB35CDB8BE" })">Xóa</a>
+                            <a href="@Url.Action("Delete","Cart", new { productId = @productInCart.ProductId })">Xóa</a>
                         </div>
                     </td>
                 </tr>
@@ -67,7 +65,7 @@
                 </td>
                 <td colspan="2">
                     <div class="btn btn-product">
-                        <a href="@Url.Action("Create","Bill", new {userId="0D77B2C0-DFD1-4DA2-DF97-08DB35CDB8BE" })">Thanh toán</a>
+                        <a href="@Url.Action("Create","Bill")">Thanh toán</a>
                     </div>
                 </td>
             </tr>

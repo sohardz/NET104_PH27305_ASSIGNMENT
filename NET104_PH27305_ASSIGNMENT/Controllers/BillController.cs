@@ -31,15 +31,17 @@ public class BillController : Controller
     }
 
     // card details có user id với product id
-    public ActionResult Create(Guid userId)
+    public ActionResult Create()
     {
-        List<CartDetail> lstCartdetails = _cartDetailServices.GetAll().Where(c=>c.UserId == userId).ToList();
+        var userId = HttpContext.Session.GetString("userId");
+        Guid id = Guid.Parse(userId);
+        List<CartDetail> lstCartdetails = _cartDetailServices.GetAll().Where(c=>c.UserId == id).ToList();
 
         var bill = new Bill()
         {
             Id = Guid.NewGuid(),
             DateofCreation = DateTime.Now,
-            UserId = userId,
+            UserId = id,
             Status = 1,
         };
                 

@@ -36,27 +36,35 @@ public class CartController : Controller
     public ActionResult Create(Guid productId)
     {
         var userId = HttpContext.Session.GetString("userId");
-        Guid id = Guid.Parse(userId);
-        if (!string.IsNullOrEmpty(userId))
+
+        if (string.IsNullOrEmpty(userId))
         {
-            List<CartDetail> cartDetails = _cartDetailServices.GetAll().Where(c => c.UserId == id).ToList();
-            CartDetail obj = new()
-            {
-                UserId = id,
-                ProductId = productId,
-                Quantity = 1
-            };
-            if (cartDetails.Any(c => c.UserId == id && c.ProductId == productId))
-            {
-                obj.Quantity = cartDetails.FirstOrDefault(c => c.UserId == id && c.ProductId == productId).Quantity + 1;
-                return _cartDetailServices.Update(obj.ProductId, obj.UserId, obj) ? RedirectToAction("Show") : BadRequest();
-            }
-            else
-            {
-                return _cartDetailServices.Create(obj) ? RedirectToAction("Show") : BadRequest();
-            }
+            return RedirectToAction("Login", "Home");
         }
-        return BadRequest();
+        else
+        {
+            Guid id = Guid.Parse(userId);
+            if (!string.IsNullOrEmpty(userId))
+            {
+                List<CartDetail> cartDetails = _cartDetailServices.GetAll().Where(c => c.UserId == id).ToList();
+                CartDetail obj = new()
+                {
+                    UserId = id,
+                    ProductId = productId,
+                    Quantity = 1
+                };
+                if (cartDetails.Any(c => c.UserId == id && c.ProductId == productId))
+                {
+                    obj.Quantity = cartDetails.FirstOrDefault(c => c.UserId == id && c.ProductId == productId).Quantity + 1;
+                    return _cartDetailServices.Update(obj.ProductId, obj.UserId, obj) ? RedirectToAction("Show") : BadRequest();
+                }
+                else
+                {
+                    return _cartDetailServices.Create(obj) ? RedirectToAction("Show") : BadRequest();
+                }
+            }
+            return BadRequest();
+        }
     }
 
 

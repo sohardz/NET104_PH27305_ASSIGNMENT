@@ -21,7 +21,7 @@
                             <img src="~/Image/@item.ImageDirection" alt="Product Image">
                         </a>
                         <div class="product-action">
-                            <a href="@Url.Action("Create","Cart", new {productId =item.Id, userId="0D77B2C0-DFD1-4DA2-DF97-08DB35CDB8BE" })"><i class="fa fa-cart-plus"></i></a>
+                            <a href="@Url.Action("Create","Cart", new {productId =item.Id })"><i class="fa fa-cart-plus"></i></a>
                             <a class="btn" href="@Url.Action("Details","Product",new { id=item.Id })"><i class="fa fa-search"></i></a>
                         </div>
                     </div>

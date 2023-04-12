@@ -53,16 +53,14 @@
                     <div class="navbar-nav mr-auto">
                         <a class="nav-item nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         <a class="nav-item nav-link" asp-area="" asp-controller="Product" asp-action="Show">Products</a>
-                        <a class="nav-item nav-link" asp-area="" asp-controller="User" asp-action="Show">User</a>
-                        <a class="nav-item nav-link" asp-area="" asp-controller="Role" asp-action="Show">Role</a>
                         <a class="nav-item nav-link" asp-area="" asp-controller="Cart" asp-action="Show">Cart</a>
                         <a class="nav-item nav-link" asp-area="" asp-controller="Bill" asp-action="Show">Bill</a>
-                        <a class="nav-item nav-link" asp-area="" asp-controller="Product" asp-action="HistoryEdit">History Edit</a>
                     </div>
                     <div class="navbar-nav ml-auto">
                         <div class="nav-item ">
                             <a href="@Url.Action("Login", "Home")" class="btn wishlist"><span>Đăng Nhập</span></a>
                             <a href="@Url.Action("Register", "Home")" class="btn cart"><span>Đăng Ký</span> </a>
+                            <a href="@Url.Action("Logout", "Home")" class="btn cart"><span>Đăng xuất</span> </a>
                         </div>
                     </div>
                 </div>
